@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import PilotTable from "/tables/PilotTable";
-import AddPilotForm from "/forms/AddPilotForm";
-import EditPilotForm from "/forms/EditPilotForm";
+import PilotTable from "./tables/PilotTable";
+import AddPilotForm from "./forms/AddPilotForm";
+import EditPilotForm from "./forms/EditPilotForm";
 
 const App = () => {
     /* ================ Init data ================ */

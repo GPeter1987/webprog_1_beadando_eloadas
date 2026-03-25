@@ -10,8 +10,8 @@ const AddPilotForm = props => {
     );
 
     const handleInputChange = event => {
-        const {name, gender, birthDate, nationality} = event.target;
-        setPilot({...pilot, [name]:value });
+        const { name, value } = event.target;
+        setPilot({ ...pilot, [name]: value });
     };
 
     return (
