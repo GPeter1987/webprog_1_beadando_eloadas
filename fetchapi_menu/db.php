@@ -1,6 +1,6 @@
 <?php
 
-$config = json_decode(file_get_contents(__DIR__ . "/config.json"), true);
+$config = json_decode(file_get_contents(__DIR__ . "/../../db/config.json"), true);
 
 $pdo = new PDO(
     "mysql:host={$config["host"]};dbname={$config["dbname"]};charset=utf8",
