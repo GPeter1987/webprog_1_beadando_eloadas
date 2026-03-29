@@ -1,121 +1,133 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const API_URL = "http://localhost/axios_menu/backend/api.php";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [pilotak, setPilotak] = useState([]);
+  const [message, setMessage] = useState("");
+
+  const [az, setAz] = useState("");
+  const [nev, setNev] = useState("");
+  const [nem, setNem] = useState("F");
+  const [szuldat, setSzuldat] = useState("");
+  const [nemzet, setNemzet] = useState("");
+  const [editAz, setEditAz] = useState(null);
+
+  useEffect(() => {
+    fetchPilotak();
+  }, []);
+
+  const fetchPilotak = async () => {
+    const res = await axios.get(API_URL);
+    setPilotak(res.data.readData);
+    setMessage(res.data.status);
+  };
+
+  const clearForm = () => {
+    setAz("");
+    setNev("");
+    setNem("F");
+    setSzuldat("");
+    setNemzet("");
+    setEditAz(null);
+  };
+
+  const submit = async () => {
+    console.log("Küldött adat:", { az, nev, nem, szuldat, nemzet }); // DEBUG
+
+    var res;
+    if (editAz) {
+      res = await axios.put(API_URL, { az: editAz, nev, nem, szuldat, nemzet });
+    } else {
+      res = await axios.post(API_URL, {az: parseInt(az), nev, nem, szuldat, nemzet });
+    }
+    setMessage(res.data.status);
+    clearForm();
+    fetchPilotak();
+  };
+
+  const editPilota = (pilota) => {
+    setEditAz(pilota.az);
+    setNev(pilota.nev);
+    setNem(pilota.nem);
+    setSzuldat(pilota.szuldat);
+    setNemzet(pilota.nemzet);
+  };
+
+  const deletePilota = async (az) => {
+    if (!confirm("Biztosan törlöd ezt a pilótát?")) return;
+    const res = await axios.delete(API_URL, { data: { az } });
+    setMessage(res.data.status);
+    fetchPilotak();
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div>
+      <h3>F1 Pilóták CRUD</h3>
+      <p>{message}</p>
 
-      <div className="ticks"></div>
+      <div>
+        <input
+          type="number"
+          value={az}
+          onChange={(e) => setAz(e.target.value)}
+          placeholder="Azonosító"
+          disabled={editAz !== null}
+        />
+        <input
+          value={nev}
+          onChange={(e) => setNev(e.target.value)}
+          placeholder="Név"
+        />
+        <select value={nem} onChange={(e) => setNem(e.target.value)}>
+          <option value="F">Férfi</option>
+          <option value="N">Női</option>
+        </select>
+        <input
+          type="date"
+          value={szuldat}
+          onChange={(e) => setSzuldat(e.target.value)}
+          placeholder="Születési dátum"
+        />
+        <input
+          value={nemzet}
+          onChange={(e) => setNemzet(e.target.value)}
+          placeholder="Nemzetiség"
+        />
+        <button onClick={submit}>{editAz ? "Módosítás" : "Hozzáadás"}</button>
+        {editAz && <button onClick={clearForm}>Mégse</button>}
+      </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <table>
+        <thead>
+          <tr>
+            <th>Az</th>
+            <th>Név</th>
+            <th>Nem</th>
+            <th>Születési dátum</th>
+            <th>Nemzetiség</th>
+            <th>Műveletek</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pilotak.map((pilota) => (
+            <tr key={pilota.az}>
+              <td>{pilota.az}</td>
+              <td>{pilota.nev}</td>
+              <td>{pilota.nem}</td>
+              <td>{pilota.szuldat}</td>
+              <td>{pilota.nemzet}</td>
+              <td>
+                <button onClick={() => editPilota(pilota)}>Szerkesztés</button>
+                <button onClick={() => deletePilota(pilota.az)}>Törlés</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
-export default App
+export default App;
