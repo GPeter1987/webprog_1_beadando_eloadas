@@ -3,7 +3,7 @@ const api = "http://localhost/fetchapi_menu/fetchapi_menu/api.php";
 document.getElementById("form").addEventListener("submit", ment);
 window.onload = betolt;
 
-// 🔵 BETÖLTÉS
+// BETÖLTÉS
 function betolt() {
     fetch(api)
         .then(res => res.json())
@@ -32,7 +32,7 @@ function betolt() {
         });
 }
 
-// 🟢 MENTÉS (CREATE + UPDATE)
+// MENTÉS (CREATE + UPDATE)
 function ment(e) {
     e.preventDefault();
 
@@ -66,7 +66,7 @@ function ment(e) {
     });
 }
 
-// 🟡 EDIT
+// EDIT
 function edit(e) {
     document.getElementById("id").value = e.id;
     document.getElementById("datum").value = e.datum;
@@ -78,7 +78,7 @@ function edit(e) {
     document.getElementById("motor").value = e.motor;
 }
 
-// 🔴 DELETE
+// DELETE
 function torol(id) {
     fetch(api, {
         method: "DELETE",
