@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: 
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url("./assets/bg.jpg") center/cover no-repeat;
+  color: white;
+  text-align: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(6, 200px);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.card {
+  width: 200px;
+  height: 200px;
+  background: #605f5f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.card img {
+  width: 150px;
+}
