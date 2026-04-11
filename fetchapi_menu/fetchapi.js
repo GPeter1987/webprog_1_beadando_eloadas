@@ -1,4 +1,4 @@
-const api = "http://localhost/fetchapi_menu/fetchapi_menu/api.php";
+const api = "/fetchapi_menu/api.php";
 
 document.getElementById("form").addEventListener("submit", ment);
 window.onload = betolt;
